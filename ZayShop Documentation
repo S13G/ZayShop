@@ -1,0 +1,19 @@
+Day 1
+error 1:
+OperationalError at /admin/store/product/
+"no such table: store_product"
+meaning: I have no product in the table to view. Empty product admin
+SOLUTION: pick add product to the table
+
+error 2:
+quantity = models.IntegerField(validators=[MinValueValidator[1]])
+TypeError: 'type' object is not subscriptable
+SOLUTION: change MinValueValidator[1] to MinValueValidator(1)
+
+error 3:
+IntegrityError at /admin/store/category/1/change/
+NOT NULL constraint failed: store_category.product
+SOLUTION: don't add null=True when your default=''
+
+error 4:
+django.db.utils.IntegrityError: NOT NULL constraint failed
