@@ -17,3 +17,4 @@ SOLUTION: don't add null=True when your default=''
 
 error 4:
 django.db.utils.IntegrityError: NOT NULL constraint failed
+SOLUTION: add null and blank = True
