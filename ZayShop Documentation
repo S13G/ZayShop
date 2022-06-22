@@ -22,3 +22,11 @@ SOLUTION: add null and blank = True
 
 Day 2
 
+error 1:
+Static wasn't loading.
+SOLUTION: Give each app its own static to make the work easy and flexible. app name = store \
+store --> static --> store --> 'assets'.
+
+error 2:
+Wasn't able to link to the shop page
+SOLUTION: Always remember to add backslash after specifying your url link in your urls.py
