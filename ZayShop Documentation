@@ -1,4 +1,5 @@
 Day 1
+
 error 1:
 OperationalError at /admin/store/product/
 "no such table: store_product"
@@ -18,3 +19,6 @@ SOLUTION: don't add null=True when your default=''
 error 4:
 django.db.utils.IntegrityError: NOT NULL constraint failed
 SOLUTION: add null and blank = True
+
+Day 2
+

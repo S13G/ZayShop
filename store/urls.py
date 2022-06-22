@@ -1,7 +1,7 @@
 from django.urls import path
 
-from store.views import ProductView
+from store.views import MainPage
 
 urlpatterns = [
-    path('products/', ProductView.as_view(), name="products")
+    path('', MainPage.as_view(), name="main_page")
 ]
