@@ -30,3 +30,12 @@ store --> static --> store --> 'assets'.
 error 2:
 Wasn't able to link to the shop page
 SOLUTION: Always remember to add backslash after specifying your url link in your urls.py
+
+Day 3
+
+error 1:
+After uploading image
+TypeError at /admin/store/productimage/add/
+expected str, bytes or os.PathLike object, not list
+SOLUTION: Firm grasp of django basic, when linking media root it should not be a list \
+[BASE_DIR / 'media'] instead it should be BASE_DIR / 'media' same goes for static
