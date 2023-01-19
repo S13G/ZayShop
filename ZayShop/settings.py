@@ -42,6 +42,7 @@ DJANGO_APPS = [
 
 LOCAL_APPS = [
     'store.apps.StoreConfig',
+    'common.apps.CommonConfig',
 ]
 
 THIRD_PARTY_APPS = [
@@ -235,6 +236,7 @@ JAZZMIN_SETTINGS = {
         "auth.user": "fas fa-user-cog",
         "store.category": "fas fa-list-alt",
         "store.subcategory": "fas fa-list-alt",
+        "store.product": "fab fa-product-hunt",
 
     },
     # Icons that are used when one is not manually specified
@@ -248,6 +250,7 @@ JAZZMIN_SETTINGS = {
     "show_ui_builder": False,
 
     "changeform_format": "horizontal_tabs",
-    # override change forms on a per modeladmin basis
-    "changeform_format_overrides": {"accounts.user": "collapsible", "accounts.group": "vertical_tabs"},
+    # override change forms on a per model-
+    # admin basis
+    # "changeform_format_overrides": {"accounts.user": "collapsible", "accounts.group": "vertical_tabs"},
 }
