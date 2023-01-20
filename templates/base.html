@@ -52,7 +52,7 @@
 <nav class="navbar navbar-expand-lg navbar-light shadow">
     <div class="container d-flex justify-content-between align-items-center">
 
-        <a class="navbar-brand text-success logo h1 align-self-center" href="index.html">
+        <a class="navbar-brand text-success logo h1 align-self-center" href="{% url 'home' %}">
             Zay
         </a>
 
@@ -67,10 +67,10 @@
             <div class="flex-fill">
                 <ul class="nav navbar-nav d-flex justify-content-between mx-lg-auto">
                     <li class="nav-item">
-                        <a class="nav-link" href="index.html">Home</a>
+                        <a class="nav-link" href="{% url 'home' %}">Home</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="about.html">About</a>
+                        <a class="nav-link" href="{% url 'about' %}">About</a>
                     </li>
                     <li class="nav-item">
                         <a class="nav-link" href="shop.html">Shop</a>
@@ -206,12 +206,12 @@
                 </ul>
             </div>
             <div class="col-auto">
-                <label class="sr-only" for="subscribeEmail">Email address</label>
-                <div class="input-group mb-2">
-                    <input type="text" class="form-control bg-dark border-light" id="subscribeEmail"
-                           placeholder="Email address">
-                    <div class="input-group-text btn-success text-light">Subscribe</div>
-                </div>
+                <form class="input-group mb-2" method="post">
+                    {% csrf_token %}
+                    <label class="sr-only" for="subscribeEmail">Email address</label>
+                    {{ newsletter_form.as_p }}
+                    <button class="input-group-text btn-success text-light">Subscribe</button>
+                </form>
             </div>
         </div>
     </div>
@@ -221,8 +221,7 @@
             <div class="row pt-2">
                 <div class="col-12">
                     <p class="text-left text-light">
-                        Copyright &copy; 2021 Company Name
-                        | Designed by <a rel="sponsored" href="https://templatemo.com" target="_blank">TemplateMo</a>
+                        Copyright &copy; 2023 Sieg Domain
                     </p>
                 </div>
             </div>

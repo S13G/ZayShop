@@ -70,4 +70,4 @@ class Product(TimeStampedUUID):
         ordering = ["-created", "name"]
 
     def __str__(self):
-        return f"{self.name} - {self.category}"
+        return f"{self.name} = {self.category}"

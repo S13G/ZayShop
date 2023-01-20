@@ -41,8 +41,9 @@ DJANGO_APPS = [
 ]
 
 LOCAL_APPS = [
-    'store.apps.StoreConfig',
     'common.apps.CommonConfig',
+    'general.apps.GeneralConfig',
+    'store.apps.StoreConfig',
 ]
 
 THIRD_PARTY_APPS = [
@@ -237,6 +238,7 @@ JAZZMIN_SETTINGS = {
         "store.category": "fas fa-list-alt",
         "store.subcategory": "fas fa-list-alt",
         "store.product": "fab fa-product-hunt",
+        "general.newsletter": "fas fa-envelope"
 
     },
     # Icons that are used when one is not manually specified
