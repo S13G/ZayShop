@@ -1,10 +1,11 @@
 from django.shortcuts import render
-from store.models import Category
+from store.models import Category, Product
 
 # Create your views here.
 
 
 def products(request):
     categories = Category.objects.all()
-    context = {"categories": categories}
+    all_products = Product.objects.all()
+    context = {"categories": categories, "products": all_products}
     return render(request, "store/shop.html", context)

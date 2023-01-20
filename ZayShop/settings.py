@@ -181,7 +181,7 @@ JAZZMIN_SETTINGS = {
     # "search_model": "news.Article",
 
     # Field name on user model that contains avatar ImageField/URLField/Charfield or a callable that receives the user
-    "user_avatar": "avatar",
+    # "user_avatar": "avatar",
 
     ############
     # Top Menu #
@@ -238,6 +238,7 @@ JAZZMIN_SETTINGS = {
         "store.category": "fas fa-list-alt",
         "store.subcategory": "fas fa-list-alt",
         "store.product": "fab fa-product-hunt",
+        "store.size": "fas fa-weight",
         "general.newsletter": "fas fa-envelope",
         "general.contact": "fas fa-address-book",
 

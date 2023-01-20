@@ -13,7 +13,7 @@ class Category(TimeStampedUUID):
     slug = AutoSlugField(populate_from="name", unique=True, always_update=True, null=True)
 
     class Meta:
-        ordering = ["-created"]
+        ordering = ["name"]
         verbose_name_plural = "Categories"
 
     def __str__(self):
@@ -34,18 +34,21 @@ class SubCategory(TimeStampedUUID):
         return f"{self.name} - {self.category}"
 
 
+class Size(TimeStampedUUID):
+    name = models.CharField(max_length=255, null=True, unique=True, blank=True)
+
+    class Meta:
+        ordering = ["-created"]
+
+    def __str__(self):
+        return f"{self.name}"
+
+
 class Product(TimeStampedUUID):
     GENDER_CHOICES = (
         ("A", "ALL"),
         ("M", "MALE"),
         ("F", "FEMALE"),
-    )
-
-    SIZE_CHOICES = (
-        ('S', 'Small'),
-        ('M', 'Medium'),
-        ('L', 'Large'),
-        ('XL', 'Extra Large')
     )
     name = models.CharField(max_length=255, null=True)
     slug = AutoSlugField(populate_from="name", unique=True, always_update=True, null=True)
@@ -60,7 +63,7 @@ class Product(TimeStampedUUID):
     specifications = models.TextField(null=True, blank=True)
     brand = models.CharField(max_length=255, null=True, blank=True)
     gender = models.CharField(max_length=255, choices=GENDER_CHOICES, default="M", null=True)
-    sizes = models.CharField(max_length=255, choices=SIZE_CHOICES, default=None, null=True, blank=True)
+    sizes = models.ManyToManyField(Size, blank=True)
     price = models.DecimalField(decimal_places=2, max_digits=10, validators=[MinValueValidator(0)], null=True)
     available_quantity = models.PositiveIntegerField(default=0, null=True)
     quantity = models.PositiveIntegerField(default=None, null=True, blank=True)
@@ -80,3 +83,11 @@ class Product(TimeStampedUUID):
         except:
             url = ''
         return url
+
+    @property
+    def display_sizes(self):
+        sizes_list = []
+        for size in self.sizes.values_list('name', flat=True):
+            sizes_list.append(size)
+        sizes = '/'.join(str(item) for item in sizes_list)
+        return sizes
