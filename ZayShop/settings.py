@@ -257,3 +257,4 @@ JAZZMIN_SETTINGS = {
     # admin basis
     # "changeform_format_overrides": {"accounts.user": "collapsible", "accounts.group": "vertical_tabs"},
 }
+

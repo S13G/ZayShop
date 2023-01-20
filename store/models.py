@@ -71,3 +71,12 @@ class Product(TimeStampedUUID):
 
     def __str__(self):
         return f"{self.name} = {self.category}"
+
+    @property
+    def image_urls(self):
+        try:
+            url = [self.product_main_image, self.second_product_image, self.third_product_image,
+                   self.fourth_product_image]
+        except:
+            url = ''
+        return url
