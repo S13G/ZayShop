@@ -44,6 +44,16 @@ class Size(TimeStampedUUID):
         return f"{self.name}"
 
 
+class Color(TimeStampedUUID):
+    name = models.CharField(max_length=255, null=True, unique=True, blank=True)
+
+    class Meta:
+        ordering = ["-created"]
+
+    def __str__(self):
+        return f"{self.name}"
+
+
 class Product(TimeStampedUUID):
     GENDER_CHOICES = (
         ("A", "ALL"),
@@ -59,10 +69,10 @@ class Product(TimeStampedUUID):
     fourth_product_image = models.ImageField(default="assets/img/default.jpg", upload_to="media", null=True, blank=True)
     fifth_product_image = models.ImageField(default="assets/img/default.jpg", upload_to="media", null=True, blank=True)
     description = models.TextField(null=True)
-    available_color = models.CharField(max_length=400, null=True, blank=True)
+    available_color = models.ManyToManyField(Color, blank=True)
     specifications = models.TextField(null=True, blank=True)
     brand = models.CharField(max_length=255, null=True, blank=True)
-    gender = models.CharField(max_length=255, choices=GENDER_CHOICES, default="M", null=True)
+    gender = models.CharField(max_length=255, choices=GENDER_CHOICES, default=None, null=True)
     sizes = models.ManyToManyField(Size, blank=True)
     price = models.DecimalField(decimal_places=2, max_digits=10, validators=[MinValueValidator(0)], null=True)
     available_quantity = models.PositiveIntegerField(default=0, null=True)
@@ -91,3 +101,11 @@ class Product(TimeStampedUUID):
             sizes_list.append(size)
         sizes = '/'.join(str(item) for item in sizes_list)
         return sizes
+
+    @property
+    def display_color(self):
+        colors_list = []
+        for color in self.available_color.values_list('name', flat=True):
+            colors_list.append(color)
+        colors = '/'.join(str(item) for item in colors_list)
+        return colors

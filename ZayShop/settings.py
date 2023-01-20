@@ -239,6 +239,7 @@ JAZZMIN_SETTINGS = {
         "store.subcategory": "fas fa-list-alt",
         "store.product": "fab fa-product-hunt",
         "store.size": "fas fa-weight",
+        "store.color": "fas fa-palette",
         "general.newsletter": "fas fa-envelope",
         "general.contact": "fas fa-address-book",
 
