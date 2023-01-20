@@ -238,7 +238,8 @@ JAZZMIN_SETTINGS = {
         "store.category": "fas fa-list-alt",
         "store.subcategory": "fas fa-list-alt",
         "store.product": "fab fa-product-hunt",
-        "general.newsletter": "fas fa-envelope"
+        "general.newsletter": "fas fa-envelope",
+        "general.contact": "fas fa-address-book",
 
     },
     # Icons that are used when one is not manually specified

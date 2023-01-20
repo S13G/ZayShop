@@ -15,10 +15,10 @@
     <link rel="stylesheet" href="{% static 'assets/css/custom.css' %}">
 
     <!-- Load fonts style after rendering the layout styles -->
+    <link rel="stylesheet" href="{% static 'izi/dist/css/iziToast.min.css' %}">
     <link rel="stylesheet"
           href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;200;300;400;500;700;900&display=swap">
     <link rel="stylesheet" href="{% static 'assets/css/fontawesome.min.css' %}">
-    <link rel="stylesheet" href="{% static 'izi/dist/css/iziToast.min.css' %}">
 </head>
 
 <body>
@@ -76,7 +76,7 @@
                         <a class="nav-link" href="shop.html">Shop</a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link" href="contact.html">Contact</a>
+                        <a class="nav-link" href="{% url 'contact' %}">Contact</a>
                     </li>
                 </ul>
             </div>
@@ -171,11 +171,11 @@
             <div class="col-md-4 pt-5">
                 <h2 class="h2 text-light border-bottom pb-3 border-light">Further Info</h2>
                 <ul class="list-unstyled text-light footer-link-list">
-                    <li><a class="text-decoration-none" href="#">Home</a></li>
-                    <li><a class="text-decoration-none" href="#">About Us</a></li>
+                    <li><a class="text-decoration-none" href="{% url 'home' %}">Home</a></li>
+                    <li><a class="text-decoration-none" href="{% url 'about' %}">About Us</a></li>
                     <li><a class="text-decoration-none" href="#">Shop Locations</a></li>
                     <li><a class="text-decoration-none" href="#">FAQs</a></li>
-                    <li><a class="text-decoration-none" href="#">Contact</a></li>
+                    <li><a class="text-decoration-none" href="{% url 'contact' %}">Contact</a></li>
                 </ul>
             </div>
 
@@ -205,11 +205,13 @@
                     </li>
                 </ul>
             </div>
+
+            {#            Email Newsletter#}
             <div class="col-auto">
                 <form class="input-group mb-2" method="post">
                     {% csrf_token %}
                     <label class="sr-only" for="subscribeEmail">Email address</label>
-                    {{ newsletter_form.as_p }}
+                    {{ newsletter_form.email }}
                     <button class="input-group-text btn-success text-light">Subscribe</button>
                 </form>
             </div>
@@ -232,14 +234,13 @@
 <!-- End Footer -->
 
 <!-- Start Script -->
+<script src="{% static 'izi/dist/js/iziToast.min.js' %}"></script>
 <script src="{% static 'assets/js/jquery-1.11.0.min.js' %}"></script>
 <script src="{% static 'assets/js/jquery-migrate-1.2.1.min.js' %}"></script>
 <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
 <script src="{% static 'assets/js/templatemo.js' %}"></script>
 <script src="{% static 'assets/js/custom.js' %}"></script>
-<script src="{% static 'izi/dist/js/iziToast.min.js' %}"></script>
 <script>
-    import iziToast from "../static/izi";
     {% if messages %}
         {% for message in messages %}
             {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
