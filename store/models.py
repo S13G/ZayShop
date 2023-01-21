@@ -87,9 +87,11 @@ class Product(TimeStampedUUID):
         return f"{self.name} = {self.category}"
 
     def save(self, *args, **kwargs):
-        super(Product, self).save(*args, **kwargs)
+        # this code is adjusting the image to fit the box default sizes so as to prevent different box sizes
         img = pillow_image.open(self.product_main_image)
         width, height = img.size
+        if height < 257:
+            height = 257
         target_width = 257
         height_coefficient = width / 257
         target_height = height / height_coefficient
@@ -97,6 +99,8 @@ class Product(TimeStampedUUID):
         img.save(self.product_main_image.path, quality=100)
         img.close()
         self.product_main_image.close()
+        super(Product, self).save(*args, **kwargs)
+
 
     @property
     def image_urls(self):
