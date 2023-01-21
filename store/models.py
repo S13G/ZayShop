@@ -101,7 +101,6 @@ class Product(TimeStampedUUID):
         self.product_main_image.close()
         super(Product, self).save(*args, **kwargs)
 
-
     @property
     def image_urls(self):
         try:
