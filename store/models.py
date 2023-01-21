@@ -1,3 +1,4 @@
+import PIL.Image as pillow_image
 from autoslug import AutoSlugField
 from django.core.validators import MinValueValidator
 from django.db import models
@@ -38,7 +39,7 @@ class Size(TimeStampedUUID):
     name = models.CharField(max_length=255, null=True, unique=True, blank=True)
 
     class Meta:
-        ordering = ["-created"]
+        ordering = ["created"]
 
     def __str__(self):
         return f"{self.name}"
@@ -48,7 +49,7 @@ class Color(TimeStampedUUID):
     name = models.CharField(max_length=255, null=True, unique=True, blank=True)
 
     class Meta:
-        ordering = ["-created"]
+        ordering = ["created"]
 
     def __str__(self):
         return f"{self.name}"
@@ -63,11 +64,11 @@ class Product(TimeStampedUUID):
     name = models.CharField(max_length=255, null=True)
     slug = AutoSlugField(populate_from="name", unique=True, always_update=True, null=True)
     category = models.ForeignKey(SubCategory, on_delete=models.SET_NULL, null=True, related_name="products")
-    product_main_image = models.ImageField(default="assets/img/default.jpg", upload_to="media", null=True)
-    second_product_image = models.ImageField(default="assets/img/default.jpg", upload_to="media", null=True, blank=True)
-    third_product_image = models.ImageField(default="assets/img/default.jpg", upload_to="media", null=True, blank=True)
-    fourth_product_image = models.ImageField(default="assets/img/default.jpg", upload_to="media", null=True, blank=True)
-    fifth_product_image = models.ImageField(default="assets/img/default.jpg", upload_to="media", null=True, blank=True)
+    product_main_image = models.ImageField(default="default.jpg", null=True)
+    second_product_image = models.ImageField(default="default.jpg", null=True, blank=True)
+    third_product_image = models.ImageField(default="default.jpg", null=True, blank=True)
+    fourth_product_image = models.ImageField(default="default.jpg", null=True, blank=True)
+    fifth_product_image = models.ImageField(default="default.jpg", null=True, blank=True)
     description = models.TextField(null=True)
     available_color = models.ManyToManyField(Color, blank=True)
     specifications = models.TextField(null=True, blank=True)
@@ -84,6 +85,18 @@ class Product(TimeStampedUUID):
 
     def __str__(self):
         return f"{self.name} = {self.category}"
+
+    def save(self, *args, **kwargs):
+        super(Product, self).save(*args, **kwargs)
+        img = pillow_image.open(self.product_main_image)
+        width, height = img.size
+        target_width = 257
+        height_coefficient = width / 257
+        target_height = height / height_coefficient
+        img = img.resize((int(target_width), int(target_height)), pillow_image.ANTIALIAS)
+        img.save(self.product_main_image.path, quality=100)
+        img.close()
+        self.product_main_image.close()
 
     @property
     def image_urls(self):

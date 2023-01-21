@@ -51,7 +51,7 @@
                         </div>
                     </div>
                 </div>
-                {#            Products Listing #}
+                {#            Products #}
                 <div class="row">
                     {% for product in products %}
                         <div class="col-md-4">
@@ -76,9 +76,6 @@
                                     <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                                         {% if product.sizes %}
                                             <li>{{ product.display_sizes }}</li>
-                                        {% endif %}
-                                        {% if product.available_color %}
-                                            <li><b>{{ product.display_color }}</b></li>
                                         {% endif %}
                                         <li class="pt-2">
                                             <span class="product-color-dot color-dot-red float-left rounded-circle ml-1"></span>
