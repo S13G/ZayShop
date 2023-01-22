@@ -90,7 +90,7 @@ class Product(TimeStampedUUID):
         # this code is adjusting the image to fit the box default sizes so as to prevent different box sizes
         img = pillow_image.open(self.product_main_image)
         width, height = img.size
-        if height < 257:
+        if height < 257 or height > 257:
             height = 257
         target_width = 257
         height_coefficient = width / 257
