@@ -261,3 +261,6 @@ JAZZMIN_SETTINGS = {
     # "changeform_format_overrides": {"accounts.user": "collapsible", "accounts.group": "vertical_tabs"},
 }
 
+JAZZMIN_UI_TWEAKS = {
+    "theme": "solar",
+}

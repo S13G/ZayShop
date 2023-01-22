@@ -68,10 +68,14 @@ class Product(TimeStampedUUID):
     category = models.ForeignKey(SubCategory, on_delete=models.SET_NULL, null=True, related_name="products")
     product_main_image = ProcessedImageField(processors=[ResizeToFill(257, 343)], format='JPEG',
                                              options={'quality': 60}, null=True)
-    second_product_image = models.ImageField(default="default.jpg", null=True, blank=True)
-    third_product_image = models.ImageField(default="default.jpg", null=True, blank=True)
-    fourth_product_image = models.ImageField(default="default.jpg", null=True, blank=True)
-    fifth_product_image = models.ImageField(default="default.jpg", null=True, blank=True)
+    second_product_image = ProcessedImageField(processors=[ResizeToFill(600, 600)], format='JPEG',
+                                               options={'quality': 60}, null=True, blank=True)
+    third_product_image = ProcessedImageField(processors=[ResizeToFill(600, 600)], format='JPEG',
+                                              options={'quality': 60}, null=True, blank=True)
+    fourth_product_image = ProcessedImageField(processors=[ResizeToFill(600, 600)], format='JPEG',
+                                               options={'quality': 60}, null=True, blank=True)
+    fifth_product_image = ProcessedImageField(processors=[ResizeToFill(600, 600)], format='JPEG',
+                                              options={'quality': 60}, null=True, blank=True)
     description = models.TextField(null=True)
     available_color = models.ManyToManyField(Color, blank=True)
     specifications = models.TextField(null=True, blank=True)
