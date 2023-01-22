@@ -1,7 +1,9 @@
-import PIL.Image as pillow_image
+# import PIL.Image as pillow_image
 from autoslug import AutoSlugField
 from django.core.validators import MinValueValidator
 from django.db import models
+from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFill
 
 from common.models import TimeStampedUUID
 
@@ -64,7 +66,8 @@ class Product(TimeStampedUUID):
     name = models.CharField(max_length=255, null=True)
     slug = AutoSlugField(populate_from="name", unique=True, always_update=True, null=True)
     category = models.ForeignKey(SubCategory, on_delete=models.SET_NULL, null=True, related_name="products")
-    product_main_image = models.ImageField(default="default.jpg", null=True)
+    product_main_image = ProcessedImageField(processors=[ResizeToFill(257, 343)], format='JPEG',
+                                             options={'quality': 60}, null=True)
     second_product_image = models.ImageField(default="default.jpg", null=True, blank=True)
     third_product_image = models.ImageField(default="default.jpg", null=True, blank=True)
     fourth_product_image = models.ImageField(default="default.jpg", null=True, blank=True)
@@ -86,20 +89,22 @@ class Product(TimeStampedUUID):
     def __str__(self):
         return f"{self.name} = {self.category}"
 
-    def save(self, *args, **kwargs):
-        # this code is adjusting the image to fit the box default sizes so as to prevent different box sizes
-        img = pillow_image.open(self.product_main_image)
-        width, height = img.size
-        if height < 257 or height > 257:
-            height = 257
-        target_width = 257
-        height_coefficient = width / 257
-        target_height = height / height_coefficient
-        img = img.resize((int(target_width), int(target_height)), pillow_image.ANTIALIAS)
-        img.save(self.product_main_image.path, quality=100)
-        img.close()
-        self.product_main_image.close()
-        super(Product, self).save(*args, **kwargs)
+    # def save(self, *args, **kwargs):
+    #     super(Product, self).save(*args, **kwargs)
+    #     # this code is adjusting the image to fit the box default sizes so as to prevent different box sizes
+    #     product_main_image = self.product_main_image
+    #     product_main_image.open()
+    #     img = pillow_image.open(product_main_image)
+    #     width, height = img.size
+    #     if height < 257 or height > 257:
+    #         height = 257
+    #     target_width = 257
+    #     height_coefficient = width / 257
+    #     target_height = height / height_coefficient
+    #     img = img.resize((int(target_width), int(target_height)), pillow_image.ANTIALIAS)
+    #     img.save(product_main_image.path, 'JPEG', quality=95)
+    #     img.close()
+    #     product_main_image.close()
 
     @property
     def image_urls(self):
