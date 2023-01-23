@@ -93,6 +93,7 @@ class Product(TimeStampedUUID):
     def __str__(self):
         return f"{self.name} = {self.category}"
 
+    # code can be used in replacement for the imagekit library
     # def save(self, *args, **kwargs):
     #     super(Product, self).save(*args, **kwargs)
     #     # this code is adjusting the image to fit the box default sizes so as to prevent different box sizes
