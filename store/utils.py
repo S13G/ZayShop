@@ -1,4 +1,8 @@
+from django.contrib import messages
 from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.shortcuts import redirect
+
+from store.models import Category, SubCategory
 
 
 # this function paginates products

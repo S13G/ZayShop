@@ -58,10 +58,13 @@ class Color(TimeStampedUUID):
 
 
 class Product(TimeStampedUUID):
+    ALL_GENDER = "A"
+    ALL_MALE = "M"
+    ALL_FEMALE = "F"
     GENDER_CHOICES = (
-        ("A", "ALL"),
-        ("M", "MALE"),
-        ("F", "FEMALE"),
+        (ALL_GENDER, "ALL"),
+        (ALL_MALE, "MALE"),
+        (ALL_FEMALE, "FEMALE"),
     )
     name = models.CharField(max_length=255, null=True)
     slug = AutoSlugField(populate_from="name", unique=True, always_update=True, null=True)
@@ -80,7 +83,7 @@ class Product(TimeStampedUUID):
     available_color = models.ManyToManyField(Color, blank=True)
     specifications = models.TextField(null=True, blank=True)
     brand = models.CharField(max_length=255, null=True, blank=True)
-    gender = models.CharField(max_length=255, choices=GENDER_CHOICES, default=None, null=True)
+    gender = models.CharField(max_length=255, choices=GENDER_CHOICES, default=ALL_GENDER, null=True)
     sizes = models.ManyToManyField(Size, blank=True)
     price = models.DecimalField(decimal_places=2, max_digits=10, validators=[MinValueValidator(0)], null=True)
     available_quantity = models.PositiveIntegerField(default=0, null=True)

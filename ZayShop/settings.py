@@ -96,10 +96,15 @@ WSGI_APPLICATION = 'ZayShop.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': config('DATABASE_DBNAME'),
+        'HOST': 'localhost',
+        'USER': config('DATABASE_USER'),
+        'PASSWORD': config('DATABASE_PASS'),
     }
 }
+
+SILENCED_SYSTEM_CHECKS = ['mysql.W003']
 
 # Password validation
 # https://docs.djangoproject.com/en/4.1/ref/settings/#auth-password-validators
