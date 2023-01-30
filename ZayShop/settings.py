@@ -262,5 +262,6 @@ JAZZMIN_SETTINGS = {
 }
 
 JAZZMIN_UI_TWEAKS = {
-    "theme": "solar",
+    "theme": "minty",
+    "dark_mode_theme": "darkly",
 }

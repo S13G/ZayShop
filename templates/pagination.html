@@ -23,7 +23,7 @@
             {% endfor %}
             {% if queryset.has_next %}
                 <li class="page-item">
-                    <a class="page-link active rounded-0 shadow-sm border-top-0 border-left-0 text-dark"
+                    <a class="page-link active rounded-0 shadow-sm border-top-0 border-left-0"
                        href="?page={{ queryset.next_page_number }}" data-page="{{ queryset.next_page_number }}">Next
                         &#10095;</a>
                 </li>

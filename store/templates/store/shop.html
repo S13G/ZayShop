@@ -17,7 +17,7 @@
                             <ul class="collapse show list-unstyled pl-3">
                                 {% if category %}
                                     {% for sub_category in category.sub_category.all %}
-                                        <li><a class="text-decoration-none" href="#">{{ sub_category.name }}</a></li>
+                                        <li><a class="text-decoration-none" href="{% url 'products_filter' sub_category.slug %}">{{ sub_category.name }}</a></li>
                                     {% endfor %}
                                 {% endif %}
                             </ul>
@@ -76,12 +76,12 @@
                                         <h5>{{ product.name }}</h5></a>
                                     <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                                         {% if product.sizes.exists %}
-                                            <li><strong>{{ product.display_sizes|truncatechars:6 }}</strong></li>
+                                            <li><strong><b>Size: </b>{{ product.display_sizes|truncatechars:6 }}</strong></li>
                                         {% else %}
                                             <li><strong><b>Size:</b> N/A</strong></li>
                                         {% endif %}
                                         {% if product.available_color.exists %}
-                                            <li><strong>{{ product.display_color|truncatechars:12 }}</strong></li>
+                                            <li><strong><b>Color: </b>{{ product.display_color|truncatechars:12 }}</strong></li>
                                         {% else %}
                                             <li><strong><b>Color:</b> N/A</strong></li>
                                         {% endif %}
