@@ -17,7 +17,9 @@
                             <ul class="collapse show list-unstyled pl-3">
                                 {% if category %}
                                     {% for sub_category in category.sub_category.all %}
-                                        <li><a class="text-decoration-none" href="{% url 'products_filter' sub_category.slug %}">{{ sub_category.name }}</a></li>
+                                        <li><a class="text-decoration-none"
+                                               href="{% url 'products_filter' sub_category.slug %}">{{ sub_category.name }}</a>
+                                        </li>
                                     {% endfor %}
                                 {% endif %}
                             </ul>
@@ -34,20 +36,24 @@
                                 <a class="h3 text-dark text-decoration-none mr-3" href="{% url 'products' %}">All</a>
                             </li>
                             <li class="list-inline-item">
-                                <a class="h3 text-dark text-decoration-none mr-3" href="{% url 'men_products' %}">Men's</a>
+                                <a class="h3 text-dark text-decoration-none mr-3"
+                                   href="{% url 'men_products' %}">Men's</a>
                             </li>
                             <li class="list-inline-item">
-                                <a class="h3 text-dark text-decoration-none" href="{% url 'women_products' %}">Women's</a>
+                                <a class="h3 text-dark text-decoration-none"
+                                   href="{% url 'women_products' %}">Women's</a>
                             </li>
                         </ul>
                     </div>
                     <div class="col-md-6 pb-4">
                         <div class="d-flex">
-                            <select class="form-control">
-                                <option>Featured</option>
-                                <option>A to Z</option>
-                                <option>Item</option>
-                            </select>
+                            <label>
+                                <select class="form-control" onchange="location=this.value">
+                                    <option value="{% url 'products' %}">All</option>
+                                    <option value="{% url 'featured_products' %}">Featured</option>
+                                    <option value="{% url 'product_letters' %}">A to Z</option>
+                                </select>
+                            </label>
                         </div>
                     </div>
                 </div>
@@ -76,12 +82,14 @@
                                         <h5>{{ product.name }}</h5></a>
                                     <ul class="w-100 list-unstyled d-flex justify-content-between mb-0">
                                         {% if product.sizes.exists %}
-                                            <li><strong><b>Size: </b>{{ product.display_sizes|truncatechars:6 }}</strong></li>
+                                            <li><strong><b>Size: </b>{{ product.display_sizes|truncatechars:6 }}
+                                            </strong></li>
                                         {% else %}
                                             <li><strong><b>Size:</b> N/A</strong></li>
                                         {% endif %}
                                         {% if product.available_color.exists %}
-                                            <li><strong><b>Color: </b>{{ product.display_color|truncatechars:12 }}</strong></li>
+                                            <li><strong><b>Color: </b>{{ product.display_color|truncatechars:12 }}
+                                            </strong></li>
                                         {% else %}
                                             <li><strong><b>Color:</b> N/A</strong></li>
                                         {% endif %}
@@ -115,7 +123,6 @@
             {#            Pagination#}
             {% include 'pagination.html' with queryset=products custom_range=custom_range %}
         </div>
-
     </div>
     <!-- End Content -->
 
@@ -132,7 +139,7 @@
                 </div>
                 <div class="col-lg-9 m-auto tempaltemo-carousel">
                     <div class="row d-flex flex-row">
-                       <!--Controls-->
+                        <!--Controls-->
                         <div class="col-1 align-self-center">
                             <a class="h1" href="#templatemo-slide-brand" role="button" data-bs-slide="prev">
                                 <i class="text-light fas fa-chevron-left"></i>

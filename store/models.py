@@ -88,7 +88,7 @@ class Product(TimeStampedUUID):
     price = models.DecimalField(decimal_places=2, max_digits=10, validators=[MinValueValidator(0)], null=True)
     available_quantity = models.PositiveIntegerField(default=0, null=True)
     quantity = models.PositiveIntegerField(default=None, null=True, blank=True)
-    featured = models.BooleanField(default=False, null=True)
+    featured = models.BooleanField(default=None, null=True)
 
     class Meta:
         ordering = ["-created", "name"]
