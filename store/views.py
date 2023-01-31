@@ -1,5 +1,6 @@
 from django.contrib import messages
 from django.db.models import Q
+from django.db.models.functions import Lower, Substr
 from django.shortcuts import render, redirect
 
 from store.models import Category, Product, SubCategory
@@ -74,12 +75,11 @@ def featured_products(request):
 
 
 def filter_products_by_letter(request):
-    uppercase_alphabet = string.ascii_uppercase
-    lowercase_alphabet = string.ascii_lowercase
     page = 'letters'
+    uppercase_alphabet = string.ascii_uppercase
     categories = Category.objects.all()
-    letters = Product.objects.filter(Q(name__icontains=uppercase_alphabet) | Q(name__icontains=lowercase_alphabet))
-    print(letters)
+    letters = Product.objects.order_by("name").annotate(first_letter=Lower(Substr('name', 1, 1)))
+    letters = letters.exclude(~Q(first_letter__in=uppercase_alphabet))
     if not letters:
         messages.info(request, 'No product')
         return redirect('products')
