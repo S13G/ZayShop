@@ -85,3 +85,13 @@ def filter_products_by_letter(request):
         return redirect('products')
     context = {"categories": categories, "letters": letters, "page": page}
     return render(request, "store/products_filter.html", context)
+
+
+def single_product(request, slug):
+    try:
+        product = Product.objects.get(slug=slug)
+    except Product.DoesNotExist:
+        messages.info(request, 'Product does not exist')
+        return redirect('products')
+    context = {'product': product}
+    return render(request, "store/shop-single.html", context)
