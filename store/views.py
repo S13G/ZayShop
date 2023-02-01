@@ -6,6 +6,7 @@ from django.shortcuts import render, redirect
 from store.models import Category, Product, SubCategory
 from store.utils import paginate_products
 
+import random
 import string
 
 
@@ -93,5 +94,10 @@ def single_product(request, slug):
     except Product.DoesNotExist:
         messages.info(request, 'Product does not exist')
         return redirect('products')
-    context = {'product': product}
+    related_products = Product.objects.select_related("category").exclude(name=product.name)
+    count = 16
+    if related_products.count() < 6:
+        count = related_products.count()
+    related_products = random.sample(list(related_products), count)
+    context = {'product': product, "related_products": related_products}
     return render(request, "store/shop-single.html", context)
