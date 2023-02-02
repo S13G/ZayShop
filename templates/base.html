@@ -233,49 +233,47 @@
 </footer>
 <!-- End Footer -->
 
-{% block script %}
-    <!-- Start Script -->
-    <script src="{% static 'izi/dist/js/iziToast.min.js' %}"></script>
-    <script src="{% static 'assets/js/jquery-1.11.0.min.js' %}"></script>
-    <script src="{% static 'assets/js/jquery-migrate-1.2.1.min.js' %}"></script>
-    <script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
-    <script src="{% static 'assets/js/templatemo.js' %}"></script>
-    <script src="{% static 'assets/js/custom.js' %}"></script>
+<!-- Start Script -->
+<script src="{% static 'izi/dist/js/iziToast.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery-1.11.0.min.js' %}"></script>
+<script src="{% static 'assets/js/jquery-migrate-1.2.1.min.js' %}"></script>
+<script src="{% static 'assets/js/bootstrap.bundle.min.js' %}"></script>
+<script src="{% static 'assets/js/templatemo.js' %}"></script>
+<script src="{% static 'assets/js/custom.js' %}"></script>
 
-    <script>
-        {% if messages %}
-            {% for message in messages %}
-                {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
-                    iziToast.success({
-                        title: 'Success:',
-                        message: '{{message}}',
-                        position: 'topCenter',
-                        zindex: 99999,
-                        timeout: 2200,
-                    });
-                {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
-                    iziToast.info({
-                        title: 'Info:',
-                        message: '{{message}}',
-                        position: 'topCenter',
-                        zindex: 99999,
-                        timeout: 2600,
-                    });
-                {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
-                    iziToast.error({
-                        title: 'Error:',
-                        message: '{{message}}',
-                        position: 'topCenter',
-                        zindex: 99999,
-                        timeout: 2300,
-                    });
-                {% endif %}
-            {% endfor %}
-        {% endif %}
-    </script>
-    <!-- End Script -->
+<script>
+    {% if messages %}
+        {% for message in messages %}
+            {% if message.level == DEFAULT_MESSAGE_LEVELS.SUCCESS %}
+                iziToast.success({
+                    title: 'Success:',
+                    message: '{{message}}',
+                    position: 'topCenter',
+                    zindex: 99999,
+                    timeout: 2200,
+                });
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.INFO %}
+                iziToast.info({
+                    title: 'Info:',
+                    message: '{{message}}',
+                    position: 'topCenter',
+                    zindex: 99999,
+                    timeout: 2600,
+                });
+            {% elif message.level == DEFAULT_MESSAGE_LEVELS.ERROR %}
+                iziToast.error({
+                    title: 'Error:',
+                    message: '{{message}}',
+                    position: 'topCenter',
+                    zindex: 99999,
+                    timeout: 2300,
+                });
+            {% endif %}
+        {% endfor %}
+    {% endif %}
+</script>
+<!-- End Script -->
 
-{% endblock script %}
 </body>
 
 </html>
