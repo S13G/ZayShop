@@ -1,13 +1,14 @@
+import random
+import string
+
 from django.contrib import messages
 from django.db.models import Q
 from django.db.models.functions import Lower, Substr
-from django.shortcuts import render, redirect
+from django.shortcuts import render, redirect, reverse
 
+from store.forms import DetailForm
 from store.models import Category, Product, SubCategory
 from store.utils import paginate_products
-
-import random
-import string
 
 
 # Create your views here.
@@ -99,5 +100,19 @@ def single_product(request, slug):
     if related_products.count() < 6:
         count = related_products.count()
     related_products = random.sample(list(related_products), count)
-    context = {'product': product, "related_products": related_products}
+    form = DetailForm()
+    if request.method == "POST" and "buy-btn" in request.POST:
+        if form.is_valid():
+            form.save()
+        else:
+            messages.info(request, "Failed to make request")
+        return redirect(f'/store/product/{product.slug}/')
+    elif request.method == "POST" and "cart-btn" in request.POST:
+        if form.is_valid():
+            messages.success(request, "Item added to cart successfully")
+            form.save()
+        else:
+            messages.info(request, "Failed to make request")
+        return redirect(f'/store/product/{product.slug}/')
+    context = {'product': product, "related_products": related_products, "form": form}
     return render(request, "store/shop-single.html", context)
