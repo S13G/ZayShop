@@ -57,6 +57,11 @@ class Color(TimeStampedUUID):
         return f"{self.name}"
 
 
+class SelectProductManager(models.Manager):
+    def get_queryset(self):
+        return super(SelectProductManager, self).get_queryset().select_related('category')
+
+
 class Product(TimeStampedUUID):
     ALL_GENDER = "A"
     ALL_MALE = "M"
@@ -66,6 +71,8 @@ class Product(TimeStampedUUID):
         (ALL_MALE, "MALE"),
         (ALL_FEMALE, "FEMALE"),
     )
+    objects = models.Manager()
+    selected = SelectProductManager()
     name = models.CharField(max_length=255, null=True)
     slug = AutoSlugField(populate_from="name", unique=True, always_update=True, null=True)
     category = models.ForeignKey(SubCategory, on_delete=models.SET_NULL, null=True, related_name="products")

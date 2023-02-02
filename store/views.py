@@ -16,7 +16,7 @@ from store.utils import paginate_products
 
 def display_products(request):
     categories = Category.objects.all()
-    products = Product.objects.all()
+    products = Product.selected.all()
     if not (categories and products):
         messages.error(request, "No products available in the shop")
         return redirect('home')
@@ -46,7 +46,7 @@ def products_filter(request, slug):
 def filter_products_by_men(request):
     page = 'men'
     categories = Category.objects.all()
-    men_products = Product.objects.filter(gender="M")
+    men_products = Product.selected.filter(gender="M")
     if not men_products.exists():
         messages.info(request, "No products in this category")
         return redirect('products')
@@ -57,7 +57,7 @@ def filter_products_by_men(request):
 def filter_products_by_women(request):
     page = 'women'
     categories = Category.objects.all()
-    women_products = Product.objects.filter(gender="F")
+    women_products = Product.selected.filter(gender="F")
     if not women_products.exists():
         messages.info(request, "No products in this category")
         return redirect('products')
@@ -68,7 +68,7 @@ def filter_products_by_women(request):
 def featured_products(request):
     page = 'featured'
     categories = Category.objects.all()
-    featured = Product.objects.filter(featured=True)
+    featured = Product.selected.filter(featured=True)
     if not featured:
         messages.info(request, 'No featured product')
         return redirect('products')
@@ -80,7 +80,7 @@ def filter_products_by_letter(request):
     page = 'letters'
     uppercase_alphabet = string.ascii_uppercase
     categories = Category.objects.all()
-    letters = Product.objects.order_by("name").annotate(first_letter=Lower(Substr('name', 1, 1)))
+    letters = Product.selected.order_by("name").annotate(first_letter=Lower(Substr('name', 1, 1)))
     letters = letters.exclude(~Q(first_letter__in=uppercase_alphabet))
     if not letters:
         messages.info(request, 'No product')
@@ -95,7 +95,7 @@ def single_product(request, slug):
     except Product.DoesNotExist:
         messages.info(request, 'Product does not exist')
         return redirect('products')
-    related_products = Product.objects.select_related("category").exclude(name=product.name)
+    related_products = Product.selected.exclude(name=product.name)
     count = 16
     if related_products.count() < 6:
         count = related_products.count()
