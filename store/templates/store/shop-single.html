@@ -9,7 +9,7 @@
             <div class="row">
                 <div class="col-lg-5 mt-5">
                     <div class="card mb-3">
-                        <img class="card-img img-fluid" src="{% static 'assets/img/product_single_10.jpg' %}"
+                        <img class="card-img img-fluid" src="{{ product.product_main_image.url }}" style="width:524px; height:524px"
                              alt="Card image cap"
                              id="product-detail">
                     </div>
@@ -182,7 +182,7 @@
                                 <div class="row pb-3">
                                     <div class="col d-grid">
                                         <button type="submit" class="btn btn-success btn-lg" name="buy-btn" value="buy">
-                                            Buy
+                                            Buy Item
                                         </button>
                                     </div>
                                     <div class="col d-grid">
