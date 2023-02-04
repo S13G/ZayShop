@@ -100,19 +100,23 @@ def single_product(request, slug):
     if related_products.count() < 6:
         count = related_products.count()
     related_products = random.sample(list(related_products), count)
-    form = DetailForm()
     if request.method == "POST" and "buy-btn" in request.POST:
+        form = DetailForm(request.POST)
         if form.is_valid():
             form.save()
+            messages.success(request, "Item bought")
         else:
             messages.info(request, "Failed to make request")
         return redirect(f'/store/product/{product.slug}/')
     elif request.method == "POST" and "cart-btn" in request.POST:
+        form = DetailForm(request.POST)
         if form.is_valid():
-            messages.success(request, "Item added to cart successfully")
             form.save()
+            messages.success(request, "Item added to cart successfully")
         else:
             messages.info(request, "Failed to make request")
         return redirect(f'/store/product/{product.slug}/')
+    else:
+        form = DetailForm()
     context = {'product': product, "related_products": related_products, "form": form}
     return render(request, "store/shop-single.html", context)
