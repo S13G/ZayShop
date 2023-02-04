@@ -186,7 +186,8 @@
                                                     class="btn btn-success"
                                                     id="btn-minus">-</span></li>
                                             <li class="list-inline-item"><span class="badge bg-secondary"
-                                                                               id="var-value">{{ form.quantity }}</span>
+                                                                               id="var-value"
+                                                                               type="number">{{ form.quantity }}</span>
                                             </li>
                                             <li class="list-inline-item" onclick="incrementValue()"><span
                                                     class="btn btn-success"
@@ -218,9 +219,11 @@
 
     <script>
         let quantity = document.querySelector("#var-value");
-        quantity.innerHTML = '1'
+        quantity.innerHTML = 1
+        console.log(quantity.innerHTML)
 
         function decrementValue() {
+            console.log(quantity)
             if (quantity.value > 1) {
                 quantity.value--;
             }

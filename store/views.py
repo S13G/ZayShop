@@ -114,7 +114,7 @@ def single_product(request, slug):
             form.save()
             messages.success(request, "Item added to cart successfully")
         else:
-            messages.info(request, "Failed to make request")
+            messages.info(request, "Failed to add item to cart")
         return redirect(f'/store/product/{product.slug}/')
     else:
         form = DetailForm()
