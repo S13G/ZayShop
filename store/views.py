@@ -4,7 +4,7 @@ import string
 from django.contrib import messages
 from django.db.models import Q
 from django.db.models.functions import Lower, Substr
-from django.shortcuts import render, redirect, reverse
+from django.shortcuts import render, redirect
 
 from store.forms import DetailForm
 from store.models import Category, Product, SubCategory
@@ -105,17 +105,25 @@ def single_product(request, slug):
         if form.is_valid():
             form.save()
             messages.success(request, "Item bought")
+            return redirect(f'/store/product/{product.slug}/')
         else:
+            for field in form:
+                for error in field.errors:
+                    messages.error(request, error)
             messages.info(request, "Failed to make request")
-        return redirect(f'/store/product/{product.slug}/')
+            return redirect(f'/store/product/{product.slug}/')
     elif request.method == "POST" and "cart-btn" in request.POST:
         form = DetailForm(request.POST)
         if form.is_valid():
             form.save()
             messages.success(request, "Item added to cart successfully")
+            return redirect(f'/store/product/{product.slug}/')
         else:
+            for field in form:
+                for error in field.errors:
+                    messages.error(request, error)
             messages.info(request, "Failed to add item to cart")
-        return redirect(f'/store/product/{product.slug}/')
+            return redirect(f'/store/product/{product.slug}/')
     else:
         form = DetailForm()
     context = {'product': product, "related_products": related_products, "form": form}

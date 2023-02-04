@@ -1,2 +1,3 @@
 1. work on the email subscription field(not showing when passing the form)
 pagination
+2. customise the many to many field in the form and the quantity field also, check bootstrap doc for that

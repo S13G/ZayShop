@@ -2,7 +2,6 @@
 {% load static %}
 
 {% block body %}
-
     <!-- Open Content -->
     <section class="bg-light">
         <div class="container pb-5">
@@ -163,18 +162,17 @@
                                 {% csrf_token %}
                                 <input type="hidden" name="product-title" value="{{ product.name }}">
                                 <div class="row">
-                                    <div class="col-auto">
-                                        <ul class="list-inline pb-3">
-                                            <li class="list-inline-item">Size:
-                                                <input type="hidden" name="product-size" id="product-size" value="S">
-                                            </li>
-                                            {% for field in form.sizes %}
-                                                <li class="list-inline-item"><span
-                                                        class="btn btn-success btn-size">{{ field }}</span>
+                                    {% if product.sizes %}
+                                        <div class="col-auto form-group">
+                                            <ul class="list-inline pb-3">
+                                                <li class="list-inline-item"><label for="id_sizes"
+                                                                                    class="font-weight-bold">Size:</label>
+                                                <li class="list-inline-item">
+                                                    {{ form.sizes }}
                                                 </li>
-                                            {% endfor %}
-                                        </ul>
-                                    </div>
+                                            </ul>
+                                        </div>
+                                    {% endif %}
                                     <div class="col-auto">
                                         <ul class="list-inline pb-3">
                                             <li class="list-inline-item text-right">
@@ -185,9 +183,7 @@
                                             <li class="list-inline-item" onclick="decrementValue()"><span
                                                     class="btn btn-success"
                                                     id="btn-minus">-</span></li>
-                                            <li class="list-inline-item"><span class="badge bg-secondary"
-                                                                               id="var-value"
-                                                                               type="number">{{ form.quantity }}</span>
+                                            <li class="list-inline-item">{{ form.quantity }}
                                             </li>
                                             <li class="list-inline-item" onclick="incrementValue()"><span
                                                     class="btn btn-success"

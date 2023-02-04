@@ -37,6 +37,16 @@ class SubCategory(TimeStampedUUID):
         return f"{self.name} - {self.category}"
 
 
+class Size(TimeStampedUUID):
+    name = models.CharField(max_length=255, null=True, unique=True, blank=True)
+
+    class Meta:
+        ordering = ["created"]
+
+    def __str__(self):
+        return f"{self.name}"
+
+
 class Color(TimeStampedUUID):
     name = models.CharField(max_length=255, null=True, unique=True, blank=True)
 
@@ -56,25 +66,10 @@ class Product(TimeStampedUUID):
     ALL_GENDER = "A"
     ALL_MALE = "M"
     ALL_FEMALE = "F"
-
     GENDER_CHOICES = (
         (ALL_GENDER, "ALL"),
         (ALL_MALE, "MALE"),
         (ALL_FEMALE, "FEMALE"),
-    )
-
-    SMALL = "S"
-    MEDIUM = "M"
-    LARGE = "L"
-    EXTRA_LARGE = "XL"
-    EXTRA_EXTRA_LARGE = "XXL"
-
-    SIZE_CHOICES = (
-        (SMALL, "Small"),
-        (MEDIUM, "Medium"),
-        (LARGE, "Large"),
-        (EXTRA_LARGE, "Xtra Large"),
-        (EXTRA_EXTRA_LARGE, "Xtra-Xtra Large")
     )
     objects = models.Manager()
     selected = SelectProductManager()
@@ -96,7 +91,7 @@ class Product(TimeStampedUUID):
     specifications = models.TextField(null=True, blank=True)
     brand = models.CharField(max_length=255, null=True, blank=True)
     gender = models.CharField(max_length=255, choices=GENDER_CHOICES, default=ALL_GENDER, null=True)
-    sizes = models.CharField(max_length=3, choices=SIZE_CHOICES, default=SMALL, null=True, blank=True)
+    sizes = models.ManyToManyField(Size, blank=True)
     price = models.DecimalField(decimal_places=2, max_digits=10, validators=[MinValueValidator(0)], null=True)
     available_quantity = models.PositiveIntegerField(default=0, null=True)
     featured = models.BooleanField(default=None, null=True)

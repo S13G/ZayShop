@@ -4,22 +4,15 @@ from store.models import Product
 
 
 class DetailForm(forms.ModelForm):
+    quantity = forms.IntegerField(min_value=1)
+
     class Meta:
         model = Product
         fields = ["sizes", "quantity"]
 
-    SMALL = "S"
-    MEDIUM = "M"
-    LARGE = "L"
-    EXTRA_LARGE = "XL"
-    EXTRA_EXTRA_LARGE = "XXL"
+    def __init__(self, *args, **kwargs):
+        super(DetailForm, self).__init__(*args, **kwargs)
 
-    SIZE_CHOICES = (
-        (SMALL, "Small"),
-        (MEDIUM, "Medium"),
-        (LARGE, "Large"),
-        (EXTRA_LARGE, "Xtra Large"),
-        (EXTRA_EXTRA_LARGE, "Xtra-Xtra Large")
-    )
-    sizes = forms.ChoiceField(choices=SIZE_CHOICES, initial=SMALL)
-    quantity = forms.IntegerField(min_value=1)
+        self.fields['sizes'].widget.attrs.update(
+            {'class': 'form-control custom-select custom-dropdown', 'size': '1', 'name': 'sizes', 'id': 'sizes'})
+        # self.fields['quantity'].widget.attrs.update({'class': 'badge bg-secondary'})
