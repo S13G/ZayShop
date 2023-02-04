@@ -9,7 +9,8 @@
             <div class="row">
                 <div class="col-lg-5 mt-5">
                     <div class="card mb-3">
-                        <img class="card-img img-fluid" src="{{ product.product_main_image.url }}" style="width:524px; height:524px"
+                        <img class="card-img img-fluid" src="{{ product.product_main_image.url }}"
+                             style="width:524px; height:524px"
                              alt="Card image cap"
                              id="product-detail">
                     </div>
@@ -34,24 +35,31 @@
                                         <div class="col-4">
                                             <a href="#">
                                                 <img class="card-img img-fluid"
-                                                     src="{% static 'assets/img/product_single_01.jpg' %}"
+                                                     src="{{ product.product_main_image.url }}"
+                                                     style="width: 129px; height: 129px"
                                                      alt="Product Image 1">
                                             </a>
                                         </div>
-                                        <div class="col-4">
-                                            <a href="#">
-                                                <img class="card-img img-fluid"
-                                                     src="{% static 'assets/img/product_single_02.jpg' %}"
-                                                     alt="Product Image 2">
-                                            </a>
-                                        </div>
-                                        <div class="col-4">
-                                            <a href="#">
-                                                <img class="card-img img-fluid"
-                                                     src="{% static 'assets/img/product_single_03.jpg' %}"
-                                                     alt="Product Image 3">
-                                            </a>
-                                        </div>
+                                        {% if product.second_product_image %}
+                                            <div class="col-4">
+                                                <a href="#">
+                                                    <img class="card-img img-fluid"
+                                                         src="{{ product.second_product_image.url }}"
+                                                         style="width: 129px; height: 129px"
+                                                         alt="Product Image 1">
+                                                </a>
+                                            </div>
+                                        {% endif %}
+                                        {% if product.third_product_image %}
+                                            <div class="col-4">
+                                                <a href="#">
+                                                    <img class="card-img img-fluid"
+                                                         src="{{ product.third_product_image.url }}"
+                                                         style="width: 129px; height: 129px"
+                                                         alt="Product Image 1">
+                                                </a>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <!--/.First slide-->
@@ -62,24 +70,31 @@
                                         <div class="col-4">
                                             <a href="#">
                                                 <img class="card-img img-fluid"
-                                                     src="{% static 'assets/img/product_single_04.jpg' %}"
+                                                     src="{{ product.product_main_image.url }}"
+                                                     style="width: 129px; height: 129px"
                                                      alt="Product Image 4">
                                             </a>
                                         </div>
-                                        <div class="col-4">
-                                            <a href="#">
-                                                <img class="card-img img-fluid"
-                                                     src="{% static 'assets/img/product_single_05.jpg' %}"
-                                                     alt="Product Image 5">
-                                            </a>
-                                        </div>
-                                        <div class="col-4">
-                                            <a href="#">
-                                                <img class="card-img img-fluid"
-                                                     src="{% static 'assets/img/product_single_06.jpg' %}"
-                                                     alt="Product Image 6">
-                                            </a>
-                                        </div>
+                                        {% if product.fourth_product_image %}
+                                            <div class="col-4">
+                                                <a href="#">
+                                                    <img class="card-img img-fluid"
+                                                         src="{{ product.fourth_product_image.url }}"
+                                                         style="width: 129px; height: 129px"
+                                                         alt="Product Image 1">
+                                                </a>
+                                            </div>
+                                        {% endif %}
+                                        {% if product.fifth_product_image %}
+                                            <div class="col-4">
+                                                <a href="#">
+                                                    <img class="card-img img-fluid"
+                                                         src="{{ product.fifth_product_image.url }}"
+                                                         style="width: 129px; height: 129px"
+                                                         alt="Product Image 1">
+                                                </a>
+                                            </div>
+                                        {% endif %}
                                     </div>
                                 </div>
                                 <!--/.Second slide-->
