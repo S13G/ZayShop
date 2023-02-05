@@ -9,10 +9,13 @@ class DetailForm(forms.ModelForm):
     class Meta:
         model = Product
         fields = ["sizes", "quantity"]
+        widgets = {
+            "sizes": forms.Select
+        }
 
     def __init__(self, *args, **kwargs):
         super(DetailForm, self).__init__(*args, **kwargs)
 
         self.fields['sizes'].widget.attrs.update(
-            {'class': 'form-control form-select custom-dropdown', 'size': '2', 'name': 'sizes', 'id': 'sizes'})
+            {'class': 'form-control form-select'})
         # self.fields['quantity'].widget.attrs.update({'class': 'badge bg-secondary'})

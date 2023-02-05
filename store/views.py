@@ -109,7 +109,7 @@ def single_product(request, slug):
         else:
             for field in form:
                 for error in field.errors:
-                    messages.error(request, error)
+                    messages.error(request, f"Buy : {error}")
             messages.info(request, "Failed to make request")
             return redirect(f'/store/product/{product.slug}/')
     elif request.method == "POST" and "cart-btn" in request.POST:
@@ -121,7 +121,7 @@ def single_product(request, slug):
         else:
             for field in form:
                 for error in field.errors:
-                    messages.error(request, error)
+                    messages.error(request, f"Cart {error}")
             messages.info(request, "Failed to add item to cart")
             return redirect(f'/store/product/{product.slug}/')
     else:

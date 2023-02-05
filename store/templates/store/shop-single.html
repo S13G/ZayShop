@@ -170,7 +170,7 @@
                                                         <b>Size: </b>
                                                     </label>
                                                 <li class="list-inline-item">
-                                                        {{ form.sizes }}
+                                                    {{ form.sizes }}
                                                 </li>
                                             </ul>
                                         </div>
@@ -185,7 +185,8 @@
                                             <li class="list-inline-item" onclick="decrementValue()"><span
                                                     class="btn btn-success"
                                                     id="btn-minus">-</span></li>
-                                            <li class="list-inline-item">{{ form.quantity }}
+                                            <li class="list-inline-item">
+                                                {{ form.quantity }}
                                             </li>
                                             <li class="list-inline-item" onclick="incrementValue()"><span
                                                     class="btn btn-success"
@@ -216,8 +217,8 @@
     <!-- Close Content -->
 
     <script>
-        let quantity = document.querySelector("#var-value");
-        quantity.innerHTML = 1
+        let quantity = document.querySelector("#id_quantity");
+        quantity.innerHTML = '1'
         console.log(quantity.innerHTML)
 
         function decrementValue() {
@@ -228,7 +229,7 @@
         }
 
         function incrementValue() {
-            let quantity = document.querySelector("#var-value");
+            let quantity = document.querySelector("#id_quantity");
             quantity.value++;
         }
     </script>

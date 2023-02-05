@@ -173,6 +173,11 @@ class OrderItem(TimeStampedUUID):
         return f"{self.product} = {self.quantity} = {self.unit_price}"
 
 
+class Cart(TimeStampedUUID):
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="cart")
+    order_items = models.ForeignKey(OrderItem, on_delete=models.SET_NULL, null=True, related_name="cart")
+
+
 class ShippingAddress(TimeStampedUUID):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="address")
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, related_name="shipping_address")
