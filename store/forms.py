@@ -14,5 +14,5 @@ class DetailForm(forms.ModelForm):
         super(DetailForm, self).__init__(*args, **kwargs)
 
         self.fields['sizes'].widget.attrs.update(
-            {'class': 'form-control custom-select custom-dropdown', 'size': '1', 'name': 'sizes', 'id': 'sizes'})
+            {'class': 'form-control form-select custom-dropdown', 'size': '2', 'name': 'sizes', 'id': 'sizes'})
         # self.fields['quantity'].widget.attrs.update({'class': 'badge bg-secondary'})

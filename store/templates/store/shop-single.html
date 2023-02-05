@@ -162,13 +162,15 @@
                                 {% csrf_token %}
                                 <input type="hidden" name="product-title" value="{{ product.name }}">
                                 <div class="row">
-                                    {% if product.sizes %}
+                                    {% if product.sizes.exists %}
                                         <div class="col-auto form-group">
                                             <ul class="list-inline pb-3">
-                                                <li class="list-inline-item"><label for="id_sizes"
-                                                                                    class="font-weight-bold">Size:</label>
                                                 <li class="list-inline-item">
-                                                    {{ form.sizes }}
+                                                    <label for="id_sizes">
+                                                        <b>Size: </b>
+                                                    </label>
+                                                <li class="list-inline-item">
+                                                        {{ form.sizes }}
                                                 </li>
                                             </ul>
                                         </div>

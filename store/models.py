@@ -1,5 +1,6 @@
 # import PIL.Image as pillow_image
 from autoslug import AutoSlugField
+from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from django.db import models
 from imagekit.models import ProcessedImageField
@@ -9,6 +10,12 @@ from common.models import TimeStampedUUID
 
 
 # Create your models here.
+
+
+class Customer(TimeStampedUUID):
+    user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
+    name = models.CharField(max_length=255, null=True)
+    email = models.EmailField(null=True)
 
 
 class Category(TimeStampedUUID):
@@ -144,3 +151,35 @@ class Product(TimeStampedUUID):
             colors_list.append(color)
         colors = '/'.join(str(item) for item in colors_list)
         return colors
+
+
+class Order(TimeStampedUUID):
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="order")
+    placed_at = models.DateTimeField(auto_now_add=True)
+    payment_complete = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.customer} = {self.payment_complete}"
+
+
+class OrderItem(TimeStampedUUID):
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, related_name='items', null=True)
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, related_name='orderitems', null=True)
+    quantity = models.PositiveSmallIntegerField()
+    unit_price = models.DecimalField(max_digits=6, decimal_places=2)
+    placed_at = models.DateTimeField(auto_now_add=True)
+
+    def __str__(self):
+        return f"{self.product} = {self.quantity} = {self.unit_price}"
+
+
+class ShippingAddress(TimeStampedUUID):
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="address")
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, related_name="shipping_address")
+    address = models.CharField(max_length=255)
+    city = models.CharField(max_length=255)
+    state = models.CharField(max_length=255)
+    zipcode = models.CharField(max_length=255)
+
+    def __str__(self):
+        return f"{self.customer} = {self.order}"
