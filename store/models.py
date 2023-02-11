@@ -186,5 +186,8 @@ class ShippingAddress(TimeStampedUUID):
     state = models.CharField(max_length=255)
     zipcode = models.CharField(max_length=255)
 
+    class Meta:
+        verbose_name_plural = 'Shipping Addresses'
+
     def __str__(self):
         return f"{self.customer} = {self.order}"
