@@ -1,4 +1,3 @@
-# import PIL.Image as pillow_image
 import secrets
 
 from autoslug import AutoSlugField
@@ -96,16 +95,6 @@ class Product(BaseModel):
     name = models.CharField(max_length=255, null=True)
     slug = AutoSlugField(populate_from="name", unique=True, always_update=True, null=True)
     category = models.ForeignKey(SubCategory, on_delete=models.SET_NULL, null=True, related_name="products")
-    product_main_image = ProcessedImageField(processors=[ResizeToFill(257, 343)], format='JPEG',
-                                             options={'quality': 60}, null=True)
-    second_product_image = ProcessedImageField(processors=[ResizeToFill(600, 600)], format='JPEG',
-                                               options={'quality': 60}, null=True, blank=True)
-    third_product_image = ProcessedImageField(processors=[ResizeToFill(600, 600)], format='JPEG',
-                                              options={'quality': 60}, null=True, blank=True)
-    fourth_product_image = ProcessedImageField(processors=[ResizeToFill(600, 600)], format='JPEG',
-                                               options={'quality': 60}, null=True, blank=True)
-    fifth_product_image = ProcessedImageField(processors=[ResizeToFill(600, 600)], format='JPEG',
-                                              options={'quality': 60}, null=True, blank=True)
     description = models.TextField(null=True)
     available_color = models.ManyToManyField(Color, blank=True)
     specifications = models.TextField(null=True, blank=True)
@@ -122,33 +111,6 @@ class Product(BaseModel):
     def __str__(self):
         return f"{self.name} = {self.category}"
 
-    # code can be used in replacement for the imagekit library
-    # def save(self, *args, **kwargs):
-    #     super(Product, self).save(*args, **kwargs)
-    #     # this code is adjusting the image to fit the box default sizes so as to prevent different box sizes
-    #     product_main_image = self.product_main_image
-    #     product_main_image.open()
-    #     img = pillow_image.open(product_main_image)
-    #     width, height = img.size
-    #     if height < 257 or height > 257:
-    #         height = 257
-    #     target_width = 257
-    #     height_coefficient = width / 257
-    #     target_height = height / height_coefficient
-    #     img = img.resize((int(target_width), int(target_height)), pillow_image.ANTIALIAS)
-    #     img.save(product_main_image.path, 'JPEG', quality=95)
-    #     img.close()
-    #     product_main_image.close()
-
-    @property
-    def image_urls(self):
-        try:
-            url = [self.product_main_image, self.second_product_image, self.third_product_image,
-                   self.fourth_product_image]
-        except:
-            url = ''
-        return url
-
     @property
     def display_sizes(self):
         sizes_list = []
@@ -164,6 +126,22 @@ class Product(BaseModel):
             colors_list.append(color)
         colors = '/'.join(str(item) for item in colors_list)
         return colors
+
+
+class ProductImage(BaseModel):
+    product = models.ForeignKey(Product, related_name="images", on_delete=models.CASCADE)
+    image = ProcessedImageField(processors=[ResizeToFill(257, 343)], format='JPEG', options={'quality': 60}, null=True)
+
+    def __str__(self):
+        return self.product.name
+
+    @property
+    def image_url(self):
+        try:
+            url = self.image.url
+        except:
+            url = None
+        return url
 
 
 class ShippingAddress(BaseModel):
@@ -210,8 +188,9 @@ class Order(BaseModel):
 
 class OrderItem(BaseModel):
     order = models.ForeignKey(Order, on_delete=models.SET_NULL, related_name='items', null=True)
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="orderitem")
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="orderitems")
     product = models.ForeignKey(Product, on_delete=models.SET_NULL, related_name='orderitems', null=True)
+    color = models.ForeignKey(Color, related_name="orderitems", on_delete=models.CASCADE)
     quantity = models.PositiveSmallIntegerField()
     unit_price = models.DecimalField(max_digits=6, decimal_places=2)
     ordered = models.BooleanField(default=False)
@@ -228,5 +207,5 @@ class OrderItem(BaseModel):
 
 
 class Cart(BaseModel):
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="cart")
-    order_items = models.ForeignKey(OrderItem, on_delete=models.SET_NULL, null=True, related_name="cart")
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="carts")
+    order_items = models.ForeignKey(OrderItem, on_delete=models.SET_NULL, null=True, related_name="carts")

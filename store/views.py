@@ -95,7 +95,7 @@ def single_product(request, slug):
     except Product.DoesNotExist:
         messages.info(request, 'Product does not exist')
         return redirect('products')
-    related_products = Product.selected.exclude(name=product.name)
+    related_products = Product.selected.exclude(slug=product.slug)
     count = 16
     if related_products.count() < 6:
         count = related_products.count()
@@ -104,13 +104,10 @@ def single_product(request, slug):
         form = DetailForm(request.POST)
         if form.is_valid():
             form.save()
-            messages.success(request, "Item bought")
+            messages.success(request, "Item added to cart successfully")
             return redirect(f'/store/product/{product.slug}/')
         else:
-            for field in form:
-                for error in field.errors:
-                    messages.error(request, f"Buy : {error}")
-            messages.info(request, "Failed to make request")
+            messages.info(request, "Failed to buy product")
             return redirect(f'/store/product/{product.slug}/')
     elif request.method == "POST" and "cart-btn" in request.POST:
         form = DetailForm(request.POST)
@@ -119,9 +116,6 @@ def single_product(request, slug):
             messages.success(request, "Item added to cart successfully")
             return redirect(f'/store/product/{product.slug}/')
         else:
-            for field in form:
-                for error in field.errors:
-                    messages.error(request, f"Cart {error}")
             messages.info(request, "Failed to add item to cart")
             return redirect(f'/store/product/{product.slug}/')
     else:
