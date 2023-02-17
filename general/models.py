@@ -1,12 +1,12 @@
 from django.db import models
 
-from common.models import TimeStampedUUID
+from common.models import BaseModel
 
 
 # Create your models here.
 
 
-class Newsletter(TimeStampedUUID):
+class Newsletter(BaseModel):
     email = models.EmailField(max_length=300, null=True, unique=True)
 
     class Meta:
@@ -16,7 +16,7 @@ class Newsletter(TimeStampedUUID):
         return f"{self.email}"
 
 
-class Contact(TimeStampedUUID):
+class Contact(BaseModel):
     name = models.CharField(max_length=255, null=True)
     email = models.EmailField(max_length=300, null=True, unique=True)
     subject = models.CharField(max_length=500, null=True)

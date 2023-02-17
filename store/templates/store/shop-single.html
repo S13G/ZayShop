@@ -182,15 +182,9 @@
                                                 <input type="hidden" name="product-quanity" id="product-quanity"
                                                        value="1">
                                             </li>
-                                            <li class="list-inline-item" onclick="decrementValue()"><span
-                                                    class="btn btn-success"
-                                                    id="btn-minus">-</span></li>
                                             <li class="list-inline-item">
                                                 {{ form.quantity }}
                                             </li>
-                                            <li class="list-inline-item" onclick="incrementValue()"><span
-                                                    class="btn btn-success"
-                                                    id="btn-plus">+</span></li>
                                         </ul>
                                     </div>
                                 </div>
@@ -215,22 +209,4 @@
         </div>
     </section>
     <!-- Close Content -->
-
-    <script>
-        let quantity = document.querySelector("#id_quantity");
-        quantity.innerHTML = '1'
-        console.log(quantity.innerHTML)
-
-        function decrementValue() {
-            console.log(quantity)
-            if (quantity.value > 1) {
-                quantity.value--;
-            }
-        }
-
-        function incrementValue() {
-            let quantity = document.querySelector("#id_quantity");
-            quantity.value++;
-        }
-    </script>
 {% endblock body %}

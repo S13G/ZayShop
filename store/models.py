@@ -1,4 +1,6 @@
 # import PIL.Image as pillow_image
+import secrets
+
 from autoslug import AutoSlugField
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
@@ -6,19 +8,30 @@ from django.db import models
 from imagekit.models import ProcessedImageField
 from imagekit.processors import ResizeToFill
 
-from common.models import TimeStampedUUID
+from common.models import BaseModel
 
 
 # Create your models here.
 
 
-class Customer(TimeStampedUUID):
+class Country(BaseModel):
+    name = models.CharField(max_length=200, unique=True)
+    code = models.CharField(max_length=200)
+
+    def __str__(self):
+        return self.name
+
+    class Meta:
+        verbose_name_plural = "Countries"
+
+
+class Customer(BaseModel):
     user = models.OneToOneField(User, on_delete=models.CASCADE, null=True)
     name = models.CharField(max_length=255, null=True)
     email = models.EmailField(null=True)
 
 
-class Category(TimeStampedUUID):
+class Category(BaseModel):
     name = models.CharField(max_length=255, null=True)
     slug = AutoSlugField(populate_from="name", unique=True, always_update=True, null=True)
 
@@ -30,7 +43,7 @@ class Category(TimeStampedUUID):
         return f"{self.name}"
 
 
-class SubCategory(TimeStampedUUID):
+class SubCategory(BaseModel):
     name = models.CharField(max_length=255, null=True)
     slug = AutoSlugField(populate_from="name", unique=True, always_update=True, null=True)
     category = models.ForeignKey(Category, on_delete=models.CASCADE, null=True, related_name="sub_category")
@@ -44,7 +57,7 @@ class SubCategory(TimeStampedUUID):
         return f"{self.name} - {self.category}"
 
 
-class Size(TimeStampedUUID):
+class Size(BaseModel):
     name = models.CharField(max_length=255, null=True, unique=True, blank=True)
 
     class Meta:
@@ -54,7 +67,7 @@ class Size(TimeStampedUUID):
         return f"{self.name}"
 
 
-class Color(TimeStampedUUID):
+class Color(BaseModel):
     name = models.CharField(max_length=255, null=True, unique=True, blank=True)
 
     class Meta:
@@ -69,7 +82,7 @@ class SelectProductManager(models.Manager):
         return super(SelectProductManager, self).get_queryset().select_related('category')
 
 
-class Product(TimeStampedUUID):
+class Product(BaseModel):
     ALL_GENDER = "A"
     ALL_MALE = "M"
     ALL_FEMALE = "F"
@@ -153,41 +166,67 @@ class Product(TimeStampedUUID):
         return colors
 
 
-class Order(TimeStampedUUID):
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="order")
-    placed_at = models.DateTimeField(auto_now_add=True)
-    payment_complete = models.BooleanField(default=False)
-
-    def __str__(self):
-        return f"{self.customer} = {self.payment_complete}"
-
-
-class OrderItem(TimeStampedUUID):
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, related_name='items', null=True)
-    product = models.ForeignKey(Product, on_delete=models.SET_NULL, related_name='orderitems', null=True)
-    quantity = models.PositiveSmallIntegerField()
-    unit_price = models.DecimalField(max_digits=6, decimal_places=2)
-    placed_at = models.DateTimeField(auto_now_add=True)
-
-    def __str__(self):
-        return f"{self.product} = {self.quantity} = {self.unit_price}"
-
-
-class Cart(TimeStampedUUID):
-    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="cart")
-    order_items = models.ForeignKey(OrderItem, on_delete=models.SET_NULL, null=True, related_name="cart")
-
-
-class ShippingAddress(TimeStampedUUID):
+class ShippingAddress(BaseModel):
     customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="address")
-    order = models.ForeignKey(Order, on_delete=models.SET_NULL, null=True, related_name="shipping_address")
-    address = models.CharField(max_length=255)
-    city = models.CharField(max_length=255)
-    state = models.CharField(max_length=255)
-    zipcode = models.CharField(max_length=255)
+    first_name = models.CharField(max_length=1000, null=True)
+    last_name = models.CharField(max_length=1000, null=True)
+    email = models.EmailField(max_length=1000, null=True, blank=True)
+    phone = models.CharField(max_length=15, null=True)
+    address1 = models.CharField(max_length=1000, null=True)
+    address2 = models.CharField(max_length=1000, null=True)
+    city = models.CharField(max_length=200, null=True)
+    state = models.CharField(max_length=200, null=True)
+    zipcode = models.IntegerField(null=True)
+    country = models.ForeignKey(Country, on_delete=models.CASCADE)
 
     class Meta:
         verbose_name_plural = 'Shipping Addresses'
 
     def __str__(self):
         return f"{self.customer} = {self.order}"
+
+
+class Order(BaseModel):
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="order")
+    tx_ref = models.CharField(max_length=10, null=True, blank=True, unique=True)
+    placed_at = models.DateTimeField(auto_now_add=True)
+    verified = models.BooleanField(default=False)
+    shipping_address = models.ForeignKey(ShippingAddress, on_delete=models.CASCADE, blank=True, null=True)
+    payment_complete = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.customer} = {self.payment_complete}"
+
+    def save(self, *args, **kwargs) -> None:
+        while not self.tx_ref:
+            allowed_chars = "ABCDEFGHIJKLMNOPQRSTUVWXYZ123456789"
+            unique_code = "".join(secrets.choice(allowed_chars) for i in range(10))
+            tx_ref = unique_code
+            similar_obj_tx_ref = Order.objects.filter(tx_ref=tx_ref)
+            if not similar_obj_tx_ref:
+                self.tx_ref = tx_ref
+        super().save(*args, **kwargs)
+
+
+class OrderItem(BaseModel):
+    order = models.ForeignKey(Order, on_delete=models.SET_NULL, related_name='items', null=True)
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="orderitem")
+    product = models.ForeignKey(Product, on_delete=models.SET_NULL, related_name='orderitems', null=True)
+    quantity = models.PositiveSmallIntegerField()
+    unit_price = models.DecimalField(max_digits=6, decimal_places=2)
+    ordered = models.BooleanField(default=False)
+
+    def __str__(self):
+        return f"{self.product} = {self.quantity} = {self.unit_price}"
+
+    @property
+    def get_total(self):
+        product = self.product
+        price = product.price
+        self.unit_price = price * self.quantity
+        return self.unit_price
+
+
+class Cart(BaseModel):
+    customer = models.ForeignKey(Customer, on_delete=models.SET_NULL, null=True, related_name="cart")
+    order_items = models.ForeignKey(OrderItem, on_delete=models.SET_NULL, null=True, related_name="cart")

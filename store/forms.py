@@ -10,12 +10,11 @@ class DetailForm(forms.ModelForm):
         model = Product
         fields = ["sizes", "quantity"]
         widgets = {
-            "sizes": forms.Select
+            "sizes": forms.CheckboxSelectMultiple
         }
 
     def __init__(self, *args, **kwargs):
         super(DetailForm, self).__init__(*args, **kwargs)
 
-        self.fields['sizes'].widget.attrs.update(
-            {'class': 'form-control form-select'})
-        # self.fields['quantity'].widget.attrs.update({'class': 'badge bg-secondary'})
+        # self.fields['sizes'].widget.attrs.update({'class': 'form-check'})
+        self.fields['quantity'].widget.attrs.update({'class': 'form-control'})
